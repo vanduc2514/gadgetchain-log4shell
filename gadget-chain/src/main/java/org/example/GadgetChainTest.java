@@ -2,7 +2,7 @@ package org.example;
 
 import java.io.*;
 
-public class GadgetChain {
+public class GadgetChainTest {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Exploit exploit = new Exploit();
         ByteArrayOutputStream out = new ByteArrayOutputStream();

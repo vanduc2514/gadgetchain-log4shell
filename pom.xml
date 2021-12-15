@@ -8,9 +8,17 @@
     <artifactId>gadgetchain-log4shell</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <packaging>pom</packaging>
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+
+    <modules>
+        <module>attacker-server</module>
+        <module>gadget-chain</module>
+        <module>vulnerable-app</module>
+    </modules>
     
 </project>
